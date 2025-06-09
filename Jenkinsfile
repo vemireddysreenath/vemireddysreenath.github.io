@@ -10,8 +10,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building...'
-                // e.g., sh 'python setup.py build'
+                echo "Building..."
+                // e.g., sh 'python setup.py build' 
             }
         }
 
