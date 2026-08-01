@@ -1,0 +1,129 @@
+name: PulseBoard
+options:
+  bundleIdPrefix: com.vemireddysreenath.pulseboard
+  deploymentTarget:
+    iOS: "17.0"
+    watchOS: "10.0"
+  createIntermediateGroups: true
+
+packages:
+  PulseBoardShared:
+    path: PulseBoardShared
+
+targets:
+  PulseBoard:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: PulseBoard
+      - path: Shared/PhoneWatch
+      - path: Shared/PhoneWidget
+    dependencies:
+      - package: PulseBoardShared
+      - target: PulseBoardWidgetExtension
+        embed: true
+      - target: PulseBoardWatch
+        embed: true
+    info:
+      path: PulseBoard/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: PulseBoard
+        NSHealthShareUsageDescription: >-
+          PulseBoard reads heart rate, calories, workouts, and related
+          metrics from Health to power your live workout dashboard, history,
+          and Siri shortcuts.
+        NSSupportsLiveActivities: true
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+    entitlements:
+      path: PulseBoard/PulseBoard.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vemireddysreenath.pulseboard
+        PRODUCT_NAME: PulseBoard
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_VERSION: "5.0"
+        SUPPORTS_MACCATALYST: NO
+        ENABLE_PREVIEWS: YES
+
+  PulseBoardWidgetExtension:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: PulseBoardWidget
+      - path: Shared/PhoneWidget
+    dependencies:
+      - package: PulseBoardShared
+    info:
+      path: PulseBoardWidget/Info.plist
+      properties:
+        CFBundleDisplayName: PulseBoard Widget
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vemireddysreenath.pulseboard.widget
+        PRODUCT_NAME: PulseBoardWidgetExtension
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: YES
+
+  PulseBoardWatch:
+    type: application.watchapp2
+    platform: watchOS
+    deploymentTarget: "10.0"
+    sources:
+      - path: PulseBoardWatch
+      - path: Shared/PhoneWatch
+    dependencies:
+      - package: PulseBoardShared
+    info:
+      path: PulseBoardWatch/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: PulseBoard
+        NSHealthShareUsageDescription: >-
+          PulseBoard reads your date of birth to estimate max heart rate for
+          HR zones, and reads recent workout data when reconnecting
+          mid-session.
+        NSHealthUpdateUsageDescription: >-
+          PulseBoard saves your workouts — including heart rate, calories,
+          and distance — to Health so they appear in Fitness.
+        WKBackgroundModes:
+          - workout-processing
+        WKRunsIndependentlyOfCompanionApp: true
+    entitlements:
+      path: PulseBoardWatch/PulseBoardWatch.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vemireddysreenath.pulseboard.watchkitapp
+        PRODUCT_NAME: PulseBoardWatch
+        TARGETED_DEVICE_FAMILY: "4"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: YES
+        ENABLE_PREVIEWS: YES
+
+schemes:
+  PulseBoard:
+    build:
+      targets:
+        PulseBoard: all
+        PulseBoardWatch: all
+        PulseBoardWidgetExtension: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+    archive:
+      config: Release
