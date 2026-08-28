@@ -1,0 +1,11 @@
+# PlatformIO build artifacts
+firmware/.pio/
+firmware/.vscode/
+
+# Python
+tools/**/__pycache__/
+tools/**/*.pyc
+tools/**/.venv/
+
+# Captured CAN logs (large, machine-specific; keep the repo for code, not data)
+*.csv
